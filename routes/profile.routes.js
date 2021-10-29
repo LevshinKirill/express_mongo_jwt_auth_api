@@ -16,8 +16,9 @@ router.get('/', authMiddleware, async (req, res) => {
 
 router.post('/changeName', authMiddleware, async (req, res) => {
   try {
-    const user = await User.findByIdAndUpdate(req.userId, { $set: { userName: req.body.userName } }, { useFindAndModify: false, new: true })
-    res.status(200).json({ 'userName': user.userName })
+    const userName = req.body.userName
+    await User.findByIdAndUpdate(req.userId, { $set: { userName: userName } }, { useFindAndModify: false, new: true })
+    res.status(200).json({ userName })
   } catch (e) {
     console.log(e)
     res.status(500).json({ message: 'Server error' })
